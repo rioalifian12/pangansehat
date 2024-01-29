@@ -2,6 +2,7 @@ const Validator = require("fastest-validator");
 const models = require("../models");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { use } = require("../routes/transaksi");
 
 // Register user
 function signUp(req, res) {
@@ -65,6 +66,7 @@ function signUp(req, res) {
 
 // Login user
 function login(req, res) {
+  const JWT_KEY = process.env.JWT_KEY;
   models.User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (user === null) {
@@ -79,10 +81,14 @@ function login(req, res) {
             if (result) {
               const token = jwt.sign(
                 {
+                  nama: user.nama,
                   email: user.email,
+                  alamat: user.alamat,
+                  noHp: user.noHp,
+                  roleId: user.roleId,
                   userId: user.id,
                 },
-                process.env.JWT_KEY,
+                JWT_KEY,
                 function (err, token) {
                   res.status(200).json({
                     message: "Autentikasi berhasil!",
@@ -107,26 +113,26 @@ function login(req, res) {
 }
 
 // GET data user by id
-// function show(req, res) {
-//   const id = req.params.id;
+function show(req, res) {
+  const id = req.params.id;
 
-//   models.User.findByPk(id)
-//     .then((result) => {
-//       if (result) {
-//         res.status(200).json(result);
-//       } else {
-//         res.status(500).json({
-//           message: "User tidak ditemukan!",
-//         });
-//       }
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         message: "Terjadi kesalahan!",
-//         error: error,
-//       });
-//     });
-// }
+  models.User.findByPk(id)
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(500).json({
+          message: "User tidak ditemukan!",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Terjadi kesalahan!",
+        error: error,
+      });
+    });
+}
 
 // GET semua data user
 function index(req, res) {
@@ -201,31 +207,10 @@ function update(req, res) {
   });
 }
 
-// DELETE data user
-// function destroy(req, res) {
-//   const id = req.params.id;
-
-//   models.User.destroy({
-//     where: { id: id },
-//   })
-//     .then((result) => {
-//       res.status(200).json({
-//         message: "User berhasil di hapus!",
-//       });
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         message: "Terjadi kesalahan!",
-//         error: error,
-//       });
-//     });
-// }
-
 module.exports = {
   signUp: signUp,
   login: login,
-  // show: show,
+  show: show,
   index: index,
   update: update,
-  // destroy: destroy,
 };

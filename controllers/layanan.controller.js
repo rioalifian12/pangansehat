@@ -43,26 +43,26 @@ function save(req, res) {
 }
 
 // GET data layanan by id
-// function show(req, res) {
-//   const id = req.params.id;
+function show(req, res) {
+  const id = req.params.id;
 
-//   models.Layanan.findByPk(id)
-//     .then((result) => {
-//       if (result) {
-//         res.status(200).json(result);
-//       } else {
-//         res.status(500).json({
-//           message: "Layanan tidak ditemukan!",
-//         });
-//       }
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         message: "Terjadi kesalahan!",
-//         error: error,
-//       });
-//     });
-// }
+  models.Layanan.findByPk(id)
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(500).json({
+          message: "Layanan tidak ditemukan!",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Terjadi kesalahan!",
+        error: error,
+      });
+    });
+}
 
 // GET semua data layanan
 function index(req, res) {
@@ -144,7 +144,7 @@ function destroy(req, res) {
 
 module.exports = {
   save: save,
-  // show: show,
+  show: show,
   index: index,
   update: update,
   destroy: destroy,

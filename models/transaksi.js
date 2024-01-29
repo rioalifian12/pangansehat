@@ -10,6 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    toJSON() {
+      return {
+        ...this.get(),
+        jumlahSampel: undefined,
+        fotoSampel: undefined,
+        jenisSampel: undefined,
+        merk: undefined,
+        responseMidtrans: undefined,
+        layananId: undefined,
+      };
+    }
   }
   Transaksi.init(
     {
@@ -24,10 +36,13 @@ module.exports = (sequelize, DataTypes) => {
         "minuman serbuk"
       ),
       merk: DataTypes.STRING,
-      statusTransaksi: DataTypes.ENUM("proses", "selesai"),
+      statusBayar: DataTypes.ENUM("belum lunas", "lunas"),
+      statusTransaksi: DataTypes.ENUM("proses", "selesai", "gagal"),
       responseMidtrans: DataTypes.TEXT,
       userId: DataTypes.INTEGER,
       layananId: DataTypes.INTEGER,
+      totalHarga: DataTypes.INTEGER,
+      token: DataTypes.STRING,
     },
     {
       sequelize,

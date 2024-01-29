@@ -50,26 +50,26 @@ function save(req, res) {
 }
 
 // GET data ulasan by id
-// function show(req, res) {
-//   const id = req.params.id;
+function show(req, res) {
+  const id = req.params.id;
 
-//   models.Ulasan.findByPk(id)
-//     .then((result) => {
-//       if (result) {
-//         res.status(200).json(result);
-//       } else {
-//         res.status(500).json({
-//           message: "Ulasan tidak ditemukan!",
-//         });
-//       }
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         message: "Terjadi kesalahan!",
-//         error: error,
-//       });
-//     });
-// }
+  models.Ulasan.findByPk(id)
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(500).json({
+          message: "Ulasan tidak ditemukan!",
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Terjadi kesalahan!",
+        error: error,
+      });
+    });
+}
 
 // GET semua data ulasan
 function index(req, res) {
@@ -136,31 +136,9 @@ function update(req, res) {
   });
 }
 
-// DELETE data ulasan
-// function destroy(req, res) {
-//   const id = req.params.id;
-//   const userId = req.userData.userId;
-
-//   models.Ulasan.destroy({
-//     where: { id: id, userId: userId },
-//   })
-//     .then((result) => {
-//       res.status(200).json({
-//         message: "Ulasan berhasil di hapus!",
-//       });
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         message: "Terjadi kesalahan!",
-//         error: error,
-//       });
-//     });
-// }
-
 module.exports = {
   save: save,
-  // show: show,
+  show: show,
   index: index,
   update: update,
-  // destroy: destroy,
 };
